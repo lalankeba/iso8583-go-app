@@ -20,6 +20,13 @@ var ExtendedSpec *iso8583.MessageSpec = func() *iso8583.MessageSpec {
 		Pref:        prefix.ASCII.Fixed,
 	})
 
+	extendedSpec.Fields[70] = field.NewString(&field.Spec{
+		Length:      3,
+		Description: "Network Management Information Code",
+		Enc:         encoding.ASCII,
+		Pref:        prefix.ASCII.Fixed,
+	})
+
 	extendedSpec.Fields[102] = field.NewString(&field.Spec{
 		Length:      16,
 		Description: "Account Identification 1",

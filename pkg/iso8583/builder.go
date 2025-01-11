@@ -38,3 +38,23 @@ func BuildFinancialMessage() ([]byte, error) {
 
 	return rawMessage, err
 }
+
+func BuildNetworkMessage() ([]byte, error) {
+	isomessage := iso8583.NewMessage(ExtendedSpec)
+
+	isomessage.MTI("0800")
+
+	isomessage.Field(7, "1220145711")
+	isomessage.Field(11, "101183")
+	isomessage.Field(12, "145711")
+	isomessage.Field(13, "1220")
+	isomessage.Field(32, "56445700")
+	isomessage.Field(37, "567134101183")
+	isomessage.Field(61, "0007") // Visa
+	isomessage.Field(70, "003")  // 001: sign-on | 002: sign-off | 003: echo
+
+	// generate binary representation of the message into rawMessage
+	rawMessage, err := isomessage.Pack()
+
+	return rawMessage, err
+}

@@ -10,13 +10,28 @@ import (
 func main() {
 	fmt.Println("ISO8583 Test App")
 
-	finMsgStream := buildAndDisplayMessage()
-
+	// financial
+	finMsgStream := buildAndDisplayFinMessage()
 	parseAndDisplayMessage(finMsgStream)
+
+	// network
+	nwkMsgStream := buildAndDisplayNwkMessage()
+	parseAndDisplayMessage(nwkMsgStream)
 
 }
 
-func buildAndDisplayMessage() []byte {
+func buildAndDisplayNwkMessage() []byte {
+	nwkMsgStream, err := iso8583.BuildNetworkMessage()
+	if err != nil {
+		fmt.Printf("Error building network message: %v\n", err)
+		return nil
+	}
+
+	fmt.Printf("Built ISO8583 Message (binary stream):\n%v\n", nwkMsgStream)
+	return nwkMsgStream
+}
+
+func buildAndDisplayFinMessage() []byte {
 	finMsgStream, err := iso8583.BuildFinancialMessage()
 	if err != nil {
 		fmt.Printf("Error building financial message: %v\n", err)
@@ -74,4 +89,5 @@ func printFields(isoMsg *iso8583moov.Message) {
 			fmt.Printf("%5d | %6v | %-42s | %s\n", i, length, desc, strValue)
 		}
 	}
+	fmt.Println()
 }
